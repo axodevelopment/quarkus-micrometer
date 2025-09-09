@@ -7,9 +7,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tags;
-import io.micrometer.core.instrument.Timer;
-
 import io.micrometer.core.annotation.Timed;
 
 import org.jboss.logging.Logger;
@@ -25,9 +22,9 @@ public class GreetingResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        LOG.info("hello: OLTP");
+        LOG.info("hello: MicroMeter");
         registry.counter("micrometer.counter", "type", "add").increment();
-        return "Hello from Quarkus REST";
+        return "MicroMeter endpoint";
     }
 
     @Timed(value = "micrometer.greeting.timer")
