@@ -63,6 +63,11 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-micrometer-opentelemetry</artifactId>
         </dependency>
+        <!-- Scheduler -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-scheduler</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
