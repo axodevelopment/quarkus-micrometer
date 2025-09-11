@@ -41,6 +41,8 @@ public class WorkResource {
             }
 
             return "ok";
+        } catch(WebApplicationException ex) {
+          return "fail";
         } finally {
             inFlight.decrementAndGet();
         }
