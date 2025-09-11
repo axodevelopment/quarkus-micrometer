@@ -161,16 +161,15 @@ echo ""
 echo -e "${YELLOW}6. Checking Project Naming Convention...${NC}"
 
 if [[ -n "${WS_USERID:-}" && -n "${WS_PROJECT:-}" ]]; then
-    EXPECTED_PROJECT="${WS_USERID}${WS_PROJECT}MODULE"
     CURRENT_PROJECT=$(oc project -q 2>/dev/null || echo "unknown")
     
-    if [[ "${CURRENT_PROJECT}" == "${EXPECTED_PROJECT}" ]]; then
+    if [[ "${CURRENT_PROJECT}" == "${WS_PROJECT}" ]]; then
         print_status "OK" "Project follows naming convention: ${CURRENT_PROJECT}"
     else
         print_status "WARNING" "Project name doesn't follow convention"
-        print_status "INFO" "Expected: ${EXPECTED_PROJECT}, Current: ${CURRENT_PROJECT}"
+        print_status "INFO" "Expected: ${WS_PROJECT}, Current: ${CURRENT_PROJECT}"
         
-        print_status "INFO" "You can switch with: oc project ${EXPECTED_PROJECT}"
+        print_status "INFO" "You can switch with: oc project ${WS_PROJECT}"
     fi
 else
     print_status "WARNING" "Cannot check project naming - WS_USERID or WS_PROJECT not set"
