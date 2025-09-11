@@ -81,7 +81,7 @@ if [[ -n "${WS_PROJECT:-}" ]]; then
         #mvn clean package -DskipTests -Dquarkus.container-image.build=true -Dquarkus.container-image.push=true -Dquarkus.kubernetes.deploy=true -Dquarkus.openshift.annotations.\"sidecar.opentelemetry.io/inject\"=sidecar
 
         # should work on clean environment
-        mvn clean package -DskipTests
+        WS_USERID=${WS_USERID} mvn clean package -DskipTests
 
     else
         print_status "WARNING" "Current project (${CURRENT_PROJECT}) does not match WS_PROJECT (${WS_PROJECT})"
