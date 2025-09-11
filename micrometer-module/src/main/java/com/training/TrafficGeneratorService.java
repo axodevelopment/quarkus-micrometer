@@ -13,7 +13,7 @@ public class TrafficGeneratorService {
 
   @Scheduled(every = "2s", delayed = "3s", identity = "traffic")
   void createTraffic() {
-    LOG.info("scheduler tick");
+    LOG.info("work process");
 
     try { 
         work.doWork(); 

@@ -40,7 +40,7 @@ public class WorkResource {
                 throw new WebApplicationException("downstream-failed", 502);
             }
 
-            return "ok";
+            return "ok-rev200";
         } catch(WebApplicationException ex) {
           return "fail";
         } finally {

@@ -39,10 +39,51 @@ print_status() {
     esac
 }
 
-# 1. Create project if it doesn't exist
 
+# Check requirements
+
+# 1. Check environment variables
+echo -e "${YELLOW}1. Checking Environment Variables...${NC}"
+
+if [[ -n "${WS_USERID:-}" ]]; then
+    print_status "OK" "WS_USERID is set to: ${WS_USERID}"
+else
+    print_status "ERROR" "WS_USERID environment variable is not set"
+fi
+
+if [[ -n "${WS_PROJECT:-}" ]]; then
+    print_status "OK" "WS_PROJECT is set to: ${WS_PROJECT}"
+else
+    print_status "ERROR" "WS_PROJECT environment variable is not set"
+fi
+
+CURRENT_PROJECT=$(oc project -q 2>/dev/null || echo "unknown")
+        
+print_status "INFO" "Current project: ${CURRENT_PROJECT}"
+
+if [[ -n "${WS_PROJECT:-}" ]]; then
+    if [[ "${CURRENT_PROJECT}" == "${WS_PROJECT}" ]]; then
+        print_status "OK" "Current project matches WS_PROJECT"
+
+# 1. Create project if it doesn't exist (maybe do it later)
 
 # 2. Deploy OTEL
+        oc apply -f ../resources/otel/OpenTelemetryCollector.yaml
+        print_status "INFO" "Applied OpenTelemetry Collector configuration"
 
+        echo ""
 
 # 3. Deploy Service / Service Monitor
+        
+        oc apply -f ../resources/otel/servicemonitor.yaml
+        print_status "INFO" "Applied Service configuration"
+
+        echo ""
+
+    else
+        print_status "WARNING" "Current project (${CURRENT_PROJECT}) does not match WS_PROJECT (${WS_PROJECT})"
+        print_status "INFO" "You can switch with: oc project ${WS_PROJECT}"
+    fi
+fi
+
+echo ""

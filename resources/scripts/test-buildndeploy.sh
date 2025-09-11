@@ -63,12 +63,26 @@ if [[ -n "${WS_PROJECT:-}" ]]; then
         print_status "OK" "Current project matches WS_PROJECT"
 
         # 2. Build app
-        quarkus build --no-tests -Dquarkus.container-image.build=true -Dquarkus.container-image.push=true
+        #quarkus build --no-tests -Dquarkus.container-image.build=true -Dquarkus.container-image.push=true
 
 
         # 3. Deploy app
-        quarkus deploy openshift
-    
+        #quarkus deploy openshift
+
+        # if you need to clear out old is, bc from another s2i
+        #oc delete deployment micrometer-module 2>/dev/null || true
+        #oc delete service micrometer-module 2>/dev/null || true
+        #oc delete route micrometer-module 2>/dev/null || true
+        #oc delete bc micrometer-module-build-user1 2>/dev/null || true
+        #oc delete is micrometer-module 2>/dev/null || true
+
+        # 2. Try mvn commands....
+        # Check appsettings for quarkus container annotations and select the right mvn package
+        #mvn clean package -DskipTests -Dquarkus.container-image.build=true -Dquarkus.container-image.push=true -Dquarkus.kubernetes.deploy=true -Dquarkus.openshift.annotations.\"sidecar.opentelemetry.io/inject\"=sidecar
+
+        # should work on clean environment
+        mvn clean package -DskipTests
+
     else
         print_status "WARNING" "Current project (${CURRENT_PROJECT}) does not match WS_PROJECT (${WS_PROJECT})"
         print_status "INFO" "You can switch with: oc project ${WS_PROJECT}"
